@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}My Blog{% endblock %}</title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="{% url 'home' %}">My Blog</a>
+		<div class="collapse navbar-collapse">
+			<ul class="navbar-nav ml-auto">
+				{% if user.is_authenticated %}
+					<li class="nav-item">1<a class="nav-link" href="{% yrl 'profile' %}">Profile</a></li>
+					<li class="nav-item">1<a class="nav-link" href="{% yrl 'logout' %}">Logout</a></li>
+				{% else %}
+					<li class="nav-item">1<a class="nav-link" href="{% yrl 'login' %}">Login</a></li>
+					<li class="nav-item">1<a class="nav-link" href="{% yrl 'register' %}">Register</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container">
+		{% block content %}{% endblock %}
+	</div>
+</body>
+</html>

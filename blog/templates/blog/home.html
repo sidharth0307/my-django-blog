@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+	<h1>Blog Home</h1>
+	{% for post in posts %}
+		<h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+		<p>{{ post.content|slice:":100"}}...</p>
+		{% endfor %}
+
+{% endfor %}
+{% endblock %}

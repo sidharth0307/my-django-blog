@@ -1,13 +1,23 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block title %}Profile{% endblock %}
 {% block content %}
-	<h2>Profile</h2>
-	<form method="POST" enctype="multipart/form-data">
+	<h2>{{ user.username }}'s Profile</h2>
+	<form method="POST" enctype="multipart/form-data" action="{% url 'profile' username=user.username %}">
 		{% csrf_token %}
 		{{ u_form.as_p }}
 		{{ p_form.as_p }}
+		{{ form.as_p }}
 		<button type="submit">Update</button>
-
 	</form>
-{% endfor %}
+
+	<h3>{{ user.username }}'s Posts</h3>
+	<ul>
+		{% for post in posts %}
+			<li><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></li>
+		{% empty %}
+            <li>No posts found.</li>
+		{% endfor %}
+	</ul>
+
 {% endblock %}

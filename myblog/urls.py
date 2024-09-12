@@ -17,12 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from blog import views as blog_views
+from django.contrib.auth import views as auth_views
+from blog.views import CustomLoginView
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("register/", blog_views.register,name='register'),
-    path("login/", auth_views.LoginView.as_view(template_name='blog/login.html'),name='login'),
+    path("login/", auth_views.LoginView.as_view(template_name='blog/login.html',redirect_authenticated_user=True,extra_context={'next':'home'}),name='login'),
     path("logout/", auth_views.LogoutView.as_view(template_name='blog/logout.html'),name='logout'),
+    path('login/',CustomLoginView.as_view(),name='login'),
+    path('login/',LoginView.as_view(template_name='login.html'),name='login'),
     path('', include('blog.urls')),
 
 

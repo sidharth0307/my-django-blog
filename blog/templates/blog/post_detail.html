@@ -1,10 +1,68 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block title %}Post Detail{% endblock %}
 {% block content %}
+
+
+
 	<h1>{{ post.title }}</h1>
 	<p>{{ post.content }}</p>
-	<p><small>Posted on {{ post.created_at }}</small></p>
-	<a href="{% url 'home' %}"></a>
+	<p><small>Posted by {{ post.author }} on {{ post.created_at }}</small></p>
 
-{% endfor %}
+{% if user.is_authenticated and user == post.author %}
+		<a href="{% url 'post_edit' post.pk %}" class="btn btn-warning">Edit</a>
+		<form action="{% url 'post_delete' post.pk %}" method="POST" style="display:inline;">
+			{% csrf_token %}
+			<button type="submit" class="btn btn-danger">Delete</button>
+		</form>
+{% endif %}
+
+
+
+	<div>
+		<form action="{% url 'like_post' post.pk %}" method="POST" style="display:inline;">
+			{% csrf_token %}
+			<button type="submit" class="btn btn-primary">
+				{% if user_has_liked %}
+					Undo
+				{% else %}
+					Like
+				{% endif %}
+			</button>
+		</form>
+		<p>{{ like_count }} likes</p>
+
+		<form action="{% url 'dislike_post' post.pk %}" method="POST" style="display:inline;">
+			{% csrf_token %}
+			<button type="submit" class="btn btn-primary">
+				{% if user_has_disliked %}
+					Undo
+				{% else %}
+					Dislike
+				{% endif %}
+			</button>
+		</form>
+		<p>{{ dislike_count }} dislikes</p>
+	</div>
+	
+
+	<h2>Comments</h2>
+	<div>
+		{% for comment in comments %}
+		<p><strong>{{ comment.author }}</strong> on {{ comment.date_posted }}:</p>
+		<p>{{ comment.content }}</p>
+		{% endfor %}
+	</div>
+
+	{% if user.is_authenticated %}
+	<p>Add a comment</p>
+	<form method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" class="btn btn-primary">Post Comment</button>
+	</form>
+	{% else %}
+	<p><a href="{% url 'login' %}"> Log in</a> to leave a comment</p>
+	{% endif %}
+
 {% endblock %}

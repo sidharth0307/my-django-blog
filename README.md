@@ -1,5 +1,5 @@
 Blog Project
-This is a Django-based blog application that allows users to register, log in, create posts, and interact with other users. 
+This is a Django-based blog application that allows users to register, log in, create posts. 
 The application includes features such as user profiles, post creation, and comment functionality. Additionally, it integrates with an external news API to fetch and display the latest news.
 
 Features
